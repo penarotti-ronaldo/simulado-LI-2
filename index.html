@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulado CFP PM 2026 - Legislação</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: #1a1a2e;
+            color: #eee;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 950px;
+            width: 100%;
+            background: #16213e;
+            border-radius: 20px;
+            padding: 30px 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            border-bottom: 2px solid #e94560;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            color: #e94560;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1rem;
+            color: #aaa;
+            margin-top: -15px;
+            margin-bottom: 30px;
+        }
+        .question-block {
+            background: #1a1a3e;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            border-left: 5px solid #e94560;
+            transition: 0.2s;
+        }
+        .question-block:hover {
+            background: #22225a;
+        }
+        .q-text {
+            font-size: 1.05rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .q-text .badge {
+            display: inline-block;
+            background: #e94560;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 12px;
+            border-radius: 20px;
+            margin-right: 8px;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px 25px;
+            margin-bottom: 5px;
+        }
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            background: #0f3460;
+            padding: 6px 16px 6px 12px;
+            border-radius: 30px;
+            transition: 0.2s;
+        }
+        .options label:hover {
+            background: #1a4a7a;
+        }
+        .options input[type="radio"] {
+            accent-color: #e94560;
+            transform: scale(1.1);
+            width: 16px;
+            height: 16px;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 6px 14px;
+            border-radius: 30px;
+            display: inline-block;
+            background: #0f3460;
+        }
+        .feedback.correct {
+            color: #4cdf8b;
+            background: #0a2a1a;
+            border: 1px solid #4cdf8b;
+        }
+        .feedback.wrong {
+            color: #ff6b6b;
+            background: #2a0f0f;
+            border: 1px solid #ff6b6b;
+        }
+        .feedback.waiting {
+            color: #ffd93d;
+            background: #2a2a0a;
+            border: 1px solid #ffd93d;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0 15px;
+        }
+        .btn {
+            background: #0f3460;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.25s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        .btn:hover {
+            background: #1a4a7a;
+            transform: scale(1.02);
+        }
+        .btn-primary {
+            background: #e94560;
+        }
+        .btn-primary:hover {
+            background: #c73652;
+        }
+        .btn-success {
+            background: #2d7a4a;
+        }
+        .btn-success:hover {
+            background: #1f5a36;
+        }
+        .score-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding: 18px 25px;
+            background: #0f3460;
+            border-radius: 40px;
+            margin: 20px 0;
+            letter-spacing: 0.5px;
+        }
+        .score-area span {
+            color: #ffd93d;
+        }
+        .nota-final {
+            background: #e94560;
+            padding: 6px 25px;
+            border-radius: 40px;
+            font-size: 1.6rem;
+            color: #fff;
+        }
+        .nota-final span {
+            color: #fff;
+        }
+        .section-title {
+            font-size: 1.6rem;
+            margin: 35px 0 20px 0;
+            color: #ffd93d;
+            border-left: 5px solid #ffd93d;
+            padding-left: 15px;
+        }
+        .small-note {
+            color: #aaa;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-top: 20px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 16px;
+            }
+            .options {
+                gap: 10px;
+            }
+            .options label {
+                font-size: 0.85rem;
+                padding: 5px 12px;
+            }
+            .q-text {
+                font-size: 0.95rem;
+            }
+            .score-area {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nota-final {
+                font-size: 1.3rem;
+                padding: 4px 20px;
+            }
+        }
+        .hidden {
+            display: none;
+        }
+        .explanation {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: #bbd4ff;
+            background: #0a1a2a;
+            padding: 8px 14px;
+            border-radius: 10px;
+            border-left: 3px solid #4a8fdb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <h1>🚔 CFP PM 2026</h1>
+        <div class="subtitle">Simulado • Legislação Institucional • Nível Médio/Difícil</div>
+
+        <div class="score-area">
+            <div>✅ Acertos: <span id="totalAcertos">0</span> / <span id="totalQuestoes">56</span></div>
+            <div class="nota-final">🎯 Nota: <span id="notaFinal">0,0</span></div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="submitAll()">📤 Corrigir todas</button>
+            <button class="btn btn-success" onclick="resetAll()">🔄 Resetar</button>
+            <button class="btn" onclick="showAllCorrect()">📖 Mostrar gabarito</button>
+        </div>
+
+        <!-- QUESTÕES V ou F -->
+        <div class="section-title">🇧🇷 Parte 1 – Verdadeiro ou Falso <span style="font-size:1rem;color:#aaa;">(41 questões)</span></div>
+        <div id="vfQuestions"></div>
+
+        <!-- QUESTÕES OBJETIVAS -->
+        <div class="section-title">🎯 Parte 2 – Múltipla Escolha <span style="font-size:1rem;color:#aaa;">(15 questões)</span></div>
+        <div id="objQuestions"></div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="submitAll()">📤 Corrigir todas</button>
+            <button class="btn btn-success" onclick="resetAll()">🔄 Resetar</button>
+            <button class="btn" onclick="showAllCorrect()">📖 Mostrar gabarito</button>
+        </div>
+        <div class="small-note">* Questões elaboradas com base nos resumos das aulas 1 a 38 • CFP PM 2026</div>
+    </div>
+
+    <script>
+        // ============================================================
+        // 1. BASE DE QUESTÕES V ou F (41)
+        // ============================================================
+        const vfData = [{
+            id: 1,
+            text: 'O critério para a promoção por antiguidade na PMPR é a antiguidade relativa, que considera o tempo de serviço do militar na graduação atual, e não o tempo total de serviço prestado à Corporação.',
+            answer: true,
+            explanation: 'Correto. O Art. 54 da Lei 5.940/1969 estabelece que a antiguidade relativa (tempo na graduação) é o critério para promoção por antiguidade. A antiguidade absoluta (tempo total de serviço) não é utilizada para esse fim.'
+        }, {
+            id: 2,
+            text: 'As promoções nos Quadros da PMPR ocorrem anualmente em três datas fixas: 21 de abril, 10 de agosto e 19 de dezembro.',
+            answer: true,
+            explanation: 'Correto. Art. 40 da Lei 5.940/1969 prevê exatamente essas três datas anuais para as promoções.'
+        }, {
+            id: 3,
+            text: 'A promoção "post-mortem" de praças depende de o militar estar incluído no Quadro de Acesso por Merecimento ou por Antiguidade, sendo este requisito indispensável.',
+            answer: false,
+            explanation: 'Errado. As situações 1 e 2 do Art. 52 (operações ou ferimento em serviço finalístico) operam de forma independente da inclusão em QAA ou merecimento.'
+        }, {
+            id: 4,
+            text: 'O Subtenente que for promovido a 2º Tenente nos seis meses anteriores à data-limite de permanência no serviço ativo concorrerá, posteriormente, à promoção ao posto de 1º Tenente.',
+            answer: false,
+            explanation: 'Errado. O Art. 44B é claro: "Não concorrem à promoção ao posto de 1º Tenente".'
+        }, {
+            id: 5,
+            text: 'Para a promoção ao posto de 2º Tenente, o Subtenente deve estar no comportamento "ótimo" ou "excepcional" e não estar submetido a medida privativa de liberdade.',
+            answer: true,
+            explanation: 'Correto. Art. 44B, parágrafo único: critérios cumulativos obrigatórios.'
+        }, {
+            id: 6,
+            text: 'O acidente em serviço, para a PMPR, exclui o deslocamento entre a residência e a unidade, pois esse trajeto é considerado de responsabilidade civil do militar.',
+            answer: false,
+            explanation: 'Errado. O Art. 1º, alínea "g" do Decreto 5.869/2005 inclui expressamente o deslocamento residência-unidade como acidente em serviço.'
+        }, {
+            id: 7,
+            text: 'Segundo o Decreto 5.869/2005, o militar que, em horário de folga, atende a uma solicitação de polícia ostensiva e sofre acidente, não faz jus ao enquadramento como acidente em serviço, pois não estava escalado.',
+            answer: false,
+            explanation: 'Errado. A alínea "h" do Art. 1º prevê exatamente essa hipótese como acidente em serviço, mesmo em horário de folga e sem escalação.'
+        }, {
+            id: 8,
+            text: 'A Lei 14.268/2003 exclui expressamente da indenização por morte ou invalidez as doenças profissionais, ainda que provocadas pelo exercício da função.',
+            answer: true,
+            explanation: 'Correto. O Art. 2º, inciso I exclui "as doenças, inclusive as profissionais, quaisquer que sejam suas causas".'
+        }, {
+            id: 9,
+            text: 'O valor da indenização por invalidez permanente total na PMPR é fixo e corresponde a exatos R$ 100.000,00, independentemente do grau de incapacidade.',
+            answer: false,
+            explanation: 'Errado. O valor máximo é R$ 50.000,00 (Art. 4º), e a invalidez total é um dos casos que pode gerar o valor máximo, mas não é fixo para todos os casos.'
+        }, {
+            id: 10,
+            text: 'Para a indenização por invalidez permanente, exige-se que esteja terminado o tratamento necessário e que o caráter da lesão seja definitivo.',
+            answer: true,
+            explanation: 'Correto. Art. 5º do Decreto-Lei 3.494/2004 estabelece esse requisito.'
+        }, {
+            id: 11,
+            text: 'O auxílio-alimentação pago aos militares estaduais possui caráter remuneratório e incorpora-se ao subsídio para fins de cálculo de proventos e pensões.',
+            answer: false,
+            explanation: 'Errado. O Art. 7º da Lei 20.937/2021 estabelece que o auxílio-alimentação NÃO se incorpora ao subsídio, é isento de IR e não serve de base para contribuição previdenciária.'
+        }, {
+            id: 12,
+            text: 'O militar em licença para tratar de interesses particulares por período inferior a 6 meses não é agregado, permanecendo na condição de adido à sua unidade.',
+            answer: true,
+            explanation: 'Correto. A agregação para interesses particulares ocorre somente quando superior a 6 meses (Art. 394 do RISG/PMPR).'
+        }, {
+            id: 13,
+            text: 'A estabilidade do policial militar na PMPR ocorre automaticamente após 3 anos de efetivo serviço, conforme garantia da Lei Orgânica Nacional (14.751/2023).',
+            answer: false,
+            explanation: 'Errado. Embora a Lei 14.751/2023 preveja estabilidade após 3 anos (Art. 18), a legislação específica da PMPR estabelece o prazo de 10 anos para a estabilidade.'
+        }, {
+            id: 14,
+            text: 'O militar da ativa pode participar de sociedade comercial como cotista ou acionista, desde que não exerça função de gerência ou administração.',
+            answer: true,
+            explanation: 'Correto. Art. 19 da Lei 14.751/2023 permite a participação como cotista, acionista ou comanditário, vedada a gerência ou administração.'
+        }, {
+            id: 15,
+            text: 'A licença para tratamento de saúde de pessoa da família, quando superior a 30 dias, é concedida pelo Comandante-Geral da PMPR.',
+            answer: false,
+            explanation: 'Errado. A competência para concessão de licença superior a 30 dias é do Diretor de Pessoal ou autoridade governamental competente, não do Comandante-Geral.'
+        }, {
+            id: 16,
+            text: 'O atestado médico apresentado pelo militar com afastamento superior a 15 dias deve ser encaminhado à Junta Médica para homologação obrigatória.',
+            answer: true,
+            explanation: 'Correto. Art. 408, §4º do RISG/PMPR e Portaria CG 864/2024 determinam o encaminhamento à JM para afastamentos superiores a 15 dias.'
+        }, {
+            id: 17,
+            text: 'O recolhimento do armamento particular do militar, em razão de licença médica com CID de transtorno mental, ocorre apenas após a realização de perícia homologatória pela Junta Médica.',
+            answer: false,
+            explanation: 'Errado. O recolhimento é IMEDIATO (Art. 27, §15 da Portaria CG 864/2024), e a perícia homologatória é necessária apenas para o restabelecimento do porte.'
+        }, {
+            id: 18,
+            text: 'No Boletim Interno da PMPR, a 3ª Parte (Assuntos Gerais e Administrativos) publica matérias como concessão de licenças, contagem de tempo de serviço e movimentações.',
+            answer: true,
+            explanation: 'Correto. Art. 304, 3ª Parte do RISG/PMPR relaciona expressamente esses atos administrativos.'
+        }, {
+            id: 19,
+            text: 'O Boletim Interno é dividido em 5 partes obrigatórias, incluindo uma parte específica para assuntos sigilosos.',
+            answer: false,
+            explanation: 'Errado. O Boletim tem 4 partes (Art. 304). Assuntos sigilosos vão para o Boletim Reservado, que não é dividido em partes.'
+        }, {
+            id: 20,
+            text: 'A designação para escala de serviço na PMPR recai sobre quem tiver menor folga no período considerado, visando distribuir equitativamente o trabalho.',
+            answer: false,
+            explanation: 'Errado. O critério é MAIOR folga (Art. 315 do RISG/PMPR). O desempate é pelo menor posto/graduação ou mais moderno.'
+        }, {
+            id: 21,
+            text: 'O serviço de guarda do quartel é composto normalmente por um Comandante de Guarda (2º ou 3º Sargento), Cabos e Soldados, mantendo-se em prontidão armada e uniformizada.',
+            answer: true,
+            explanation: 'Correto. Art. 326 do RISG/PMPR.'
+        }, {
+            id: 22,
+            text: 'A sentinela pode deixar o posto para perseguir um suspeito que tente arrombar o quartel, desde que comunique imediatamente o fato ao Comandante da Guarda.',
+            answer: false,
+            explanation: 'Errado. O dever da sentinela é "não abandonar nem descuidar da arma" e "chamar o encarregado" diante de anormalidades (Art. 330). O abandono do posto é proibido.'
+        }, {
+            id: 23,
+            text: 'O tempo de serviço prestado à União, a outros Estados ou a Municípios é computado para todos os efeitos legais na carreira do militar da PMPR, inclusive para progressão funcional.',
+            answer: false,
+            explanation: 'Errado. Conforme Art. 297 do Código da PMPR, esse tempo é computado apenas para efeito de transferência para a reserva remunerada e reforma.'
+        }, {
+            id: 24,
+            text: 'O militar em licença para tratamento da própria saúde, por período superior a 30 dias, é considerado agregado ao Quadro da Corporação.',
+            answer: false,
+            explanation: 'Errado. A licença para saúde própria não gera agregação, apenas a condição de "adido à unidade" (Art. 394 do RISG).'
+        }, {
+            id: 25,
+            text: 'A agregação por deserção ou extravio faz com que o oficial deixe vaga no respectivo Quadro.',
+            answer: true,
+            explanation: 'Correto. Art. 283, §2º do Código da PMPR: o oficial que se agregar por deserção ou extravio DEIXA VAGA no respectivo Quadro.'
+        }, {
+            id: 26,
+            text: 'O militar reformado por invalidez decorrente de ferimento em serviço de manutenção da ordem pública tem direito a proventos integrais, independentemente do tempo de serviço.',
+            answer: true,
+            explanation: 'Correto. Art. 171, alínea "b" do Código da PMPR: proventos integrais se a reforma por invalidez decorrer de ferimento em campanha ou em serviço de manutenção da ordem pública.'
+        }, {
+            id: 27,
+            text: 'O militar que completar 30 anos de serviço público pode requerer transferência para a reserva remunerada com proventos integrais, independentemente de inspeção de saúde.',
+            answer: true,
+            explanation: 'Correto. Art. 157, §4º, inciso I: transferência a pedido com mais de 30 anos de serviço público, independente de inspeção de saúde, com proventos integrais.'
+        }, {
+            id: 28,
+            text: 'A reintegração é o ato pelo qual a praça excluída reingressa na Corporação por conveniência administrativa, sem direito a ressarcimento de prejuízos.',
+            answer: false,
+            explanation: 'Errado. Isso é a reinclusão (Art. 274). A reintegração decorre de sentença judicial, com ressarcimento de prejuízos (Art. 271-273).'
+        }, {
+            id: 29,
+            text: 'O militar da reserva remunerada transferido há mais de 10 anos NÃO pode ser designado para o serviço ativo em caráter transitório.',
+            answer: true,
+            explanation: 'Correto. Art. 166-A, parágrafo único, vedação expressa para militares da reserva remunerada há mais de 10 anos.'
+        }, {
+            id: 30,
+            text: 'A licença eleitoral, do registro da candidatura até 5 dias após o resultado, é concedida pelo Comandante-Geral da PMPR e, se o militar for eleito, é transferido para a reserva remunerada na diplomação.',
+            answer: true,
+            explanation: 'Correto. Conforme a tabela de licenças do RISG/PMPR (Art. 393).'
+        }, {
+            id: 31,
+            text: 'O Subsídio da PMPR absorveu e extinguiu verbas como soldo, adicional por tempo de serviço e gratificações de ensino, mas manteve a ajuda de custo e indenização de transporte como verbas autônomas.',
+            answer: false,
+            explanation: 'Errado. O Art. 11 da Lei 17.169/2012 extinguiu também ajuda de custo, indenização de transporte e serviço extraordinário.'
+        }, {
+            id: 32,
+            text: 'A promoção por classe na PMPR (Classe I a V) ocorre a cada 7 anos de efetivo exercício, independentemente de avaliação de desempenho ou disponibilidade orçamentária.',
+            answer: false,
+            explanation: 'Errado. Depende de comprovação de disponibilidade orçamentária e financeira, e deve ser publicada por Decreto do Chefe do Poder Executivo (Art. 7º, §7º da Lei 17.169/2012).'
+        }, {
+            id: 33,
+            text: 'O militar estadual que sofrer acidente em serviço e tiver encurtamento de 2 cm em um dos membros inferiores fará jus à indenização proporcional, conforme a tabela da Lei 14.268/2003.',
+            answer: false,
+            explanation: 'Errado. A tabela do Decreto 3.494/2004 estabelece que NÃO serão pagas indenizações para encurtamentos inferiores a 3 cm.'
+        }, {
+            id: 34,
+            text: 'A perda total do uso de uma das mãos (invalidez permanente parcial) gera direito a 60% do valor máximo de R$ 50.000,00, ou seja, R$ 30.000,00 de indenização.',
+            answer: true,
+            explanation: 'Correto. Anexo I do Decreto 3.494/2004: Perda total do uso de uma das mãos = 60% sobre R$ 50.000,00.'
+        }, {
+            id: 35,
+            text: 'O militar que estiver em gozo de licença especial (6 meses por decênio) permanece em efetivo serviço para todos os fins, inclusive para contagem de tempo de serviço.',
+            answer: true,
+            explanation: 'Correto. A licença especial é computada como efetivo serviço (Art. 385, Parágrafo Único do RISG).'
+        }, {
+            id: 36,
+            text: 'O Curso de Aperfeiçoamento de Sargentos (CAS) é exigido para que o 1º Sargento ou Subtenente possa ingressar no Quadro de Acesso para promoção.',
+            answer: true,
+            explanation: 'Correto. Art. 25, inciso IV do RISG: para 1º Sargento ou Subtenente, possuir o CAS ou equivalente.'
+        }, {
+            id: 37,
+            text: 'Na pontuação por merecimento, as medalhas estaduais e nacionais têm pesos idênticos, sendo todas avaliadas em 3 pontos.',
+            answer: false,
+            explanation: 'Errado. As medalhas têm pesos distintos: Mérito (3 pts), Sangue (4 pts), Humanidade (4 pts), Cruz de Combate (4 pts), entre outras. As nacionais também são 3 pts, mas há variações.'
+        }, {
+            id: 38,
+            text: 'O militar condenado por crime doloso com pena transitada em julgado acumula, no mínimo, 4 pontos negativos na contagem de merecimento, a critério da CPP.',
+            answer: true,
+            explanation: 'Correto. Art. 37, inciso III, alínea "a": crime doloso = 4 a 8 pontos negativos, a critério da CPP.'
+        }, {
+            id: 39,
+            text: 'O militar que atingir 35 anos de serviço público será transferido compulsoriamente para a reserva remunerada, salvo se ocupar cargo de Comandante-Geral, hipótese em que poderá permanecer por até 5 anos agregado.',
+            answer: true,
+            explanation: 'Correto. Art. 157, caput, e Art. 160 do Código da PMPR: a permanência na função de Comandante-Geral após 35 anos acarreta agregação automática, não podendo exceder a 05 anos.'
+        }, {
+            // NOVA QUESTÃO 40 - 5 ÓRGÃOS DA PMPR
+            id: 40,
+            text: 'A estrutura organizacional da PMPR, conforme a Lei nº 22.354/2025, divide-se em cinco grupos de órgãos: Direção, Assessoramento, Apoio, Execução e Correição.',
+            answer: true,
+            explanation: 'Correto. Art. 5º da Lei nº 22.354/2025: "A PMPR é estruturada em 5 grandes grupos de órgãos: I - Órgãos de Direção; II - Órgãos de Assessoramento; III - Órgãos de Apoio; IV - Órgãos de Execução; V - Órgãos de Correição."'
+        }, {
+            // NOVA QUESTÃO 41 - TRÂNSITO E IDADE PARA RESERVA COMPULSÓRIA
+            id: 41,
+            text: 'O militar que completa 35 anos de serviço público é transferido compulsoriamente para a reserva remunerada, independentemente da idade, enquanto o militar que atinge a idade limite de 53 anos (Soldado) ou 56 anos (Subtenente/Sargento) também é transferido compulsoriamente por idade, conforme o Art. 157 do Código da PMPR.',
+            answer: true,
+            explanation: 'Correto. O Art. 157 do Código da PMPR prevê a transferência compulsória para a reserva remunerada: I - por 35 anos de serviço público; II - por atingir a idade limite estabelecida em lei (Soldado: 53 anos; Subtenente/Sargento: 56 anos; Cabo: 54 anos, entre outros).'
+        }];
+
+        // ============================================================
+        // 2. BASE DE QUESTÕES OBJETIVAS (15)
+        // ============================================================
+        const objData = [{
+            id: 1,
+            text: 'Conforme a Lei Estadual nº 5.940/1969 (promoções), o interstício mínimo para que um Cabo seja promovido a 3º Sargento, considerando a regra geral, é de:',
+            options: ['3 anos', '4 anos', '5 anos', '6 anos'],
+            correct: 2,
+            explanation: 'Art. 25, inciso VIII: 3º Sargento = mínimo de 5 anos como Cabo.'
+        }, {
+            id: 2,
+            text: 'De acordo com o Decreto nº 5.869/2005, NÃO se considera acidente em serviço aquele que:',
+            options: [
+                'Ocorre durante deslocamento residência-unidade.',
+                'Decorrer de crime ou transgressão disciplinar perpetrado pelo militar acidentado.',
+                'Ocorre em horário de folga, no atendimento a solicitação de polícia ostensiva.',
+                'Ocorre em viagem autorizada por autoridade competente.'
+            ],
+            correct: 1,
+            explanation: 'Art. 1º, §2º: não se aplica quando o acidente decorrer de crime ou transgressão disciplinar perpetrados pelo militar acidentado ou por subordinado com sua aquiescência.'
+        }, {
+            id: 3,
+            text: 'A respeito da indenização por invalidez permanente (Lei 14.268/2003 c/c Decreto 3.494/2004), assinale a alternativa correta:',
+            options: [
+                'O valor máximo é de R$ 100.000,00 para casos de invalidez total.',
+                'A perda total da visão de um olho, quando o militar já não possui a outra visão, equivale a 70% do valor máximo.',
+                'Doenças profissionais estão expressamente incluídas como causas indenizáveis.',
+                'A invalidez permanente parcial é indenizada com valor fixo de R$ 25.000,00.'
+            ],
+            correct: 1,
+            explanation: 'Anexo I: perda total da visão de um olho (quando já não tiver a outra visão) = 70% (R$ 35.000,00). Doenças são excluídas (Art. 2º).'
+        }, {
+            id: 4,
+            text: 'Sobre a agregação, conforme o Código da PMPR (Lei 1.943/1954), analise as afirmativas e assinale a correta:',
+            options: [
+                'O oficial agregado por licença para tratar de interesses particulares superior a 6 meses não conta o tempo para nenhum efeito legal.',
+                'O militar que desempenha cargo de Secretário de Estado é automaticamente agregado ao Quadro.',
+                'A reversão à atividade, cessado o motivo da agregação, depende de publicação em Diário Oficial e nova inspeção de saúde.',
+                'O extravio, para efeito de agregação, caracteriza-se após 15 dias de desaparecimento em operações.'
+            ],
+            correct: 0,
+            explanation: 'Art. 283, §1º: "O oficial não conta, para nenhum efeito, o tempo em que passar agregado pelos motivos da letra b (interesses particulares > 6 meses)".'
+        }, {
+            id: 5,
+            text: 'No que tange ao Boletim Interno (RISG/PMPR), a 4ª Parte destina-se a publicar, EXCETO:',
+            options: [
+                'Punições disciplinares.',
+                'Elogios e referências elogiosas.',
+                'Concessão de licença especial.',
+                'Soluções de processos administrativos e disciplinares.'
+            ],
+            correct: 2,
+            explanation: 'Concessão de licença especial é publicada na 3ª Parte (Assuntos Gerais e Administrativos), não na 4ª (Justiça e Disciplina).'
+        }, {
+            id: 6,
+            text: 'Conforme a Lei 17.169/2012 (Subsídio), a promoção de classe (I a V) no âmbito da PMPR ocorre a cada:',
+            options: ['5 anos', '7 anos', '10 anos', '15 anos'],
+            correct: 1,
+            explanation: 'Art. 7º, inciso II: promoção por classe a cada 7 anos de efetivo exercício prestado ao Estado do Paraná.'
+        }, {
+            id: 7,
+            text: 'O auxílio-alimentação (Lei 20.937/2021) NÃO é devido ao militar que estiver na seguinte situação:',
+            options: [
+                'Em gozo de férias.',
+                'Em licença para tratamento da própria saúde.',
+                'Em licença para tratar de interesses particulares.',
+                'Em licença-maternidade.'
+            ],
+            correct: 2,
+            explanation: 'Art. 5º, inciso V: não é pago a militares em licença para tratar de interesses particulares. As demais são hipóteses de concessão (Art. 4º).'
+        }, {
+            id: 8,
+            text: 'Sobre os requisitos para ingresso na PMPR (Lei 1.943/1954 e Lei 14.751/2023), assinale a alternativa INCORRETA:',
+            options: [
+                'Para Soldado combatente, exige-se curso superior completo e CNH categoria "B".',
+                'Para Cadete (CFOC), exige-se bacharelado em Direito para a PMPR.',
+                'Para Oficial Não Combatente, a idade máxima é de 35 anos no ato da inscrição.',
+                'A aprovação em exame toxicológico de larga janela é requisito obrigatório para ingresso.'
+            ],
+            correct: 2,
+            explanation: 'A idade máxima para Oficial Não Combatente é de 40 anos (Art. 20, item "a" do Código da PMPR).'
+        }, {
+            id: 9,
+            text: 'A respeito do trânsito (RISG/PMPR), o militar que for movimentado para nova sede a mais de 100 km de distância terá direito a quantos dias de trânsito?',
+            options: ['4 dias', '6 dias', '8 dias', '10 dias'],
+            correct: 2,
+            explanation: 'Art. 392, inciso II: 8 dias para localidades acima de 100 km ou fora da região metropolitana.'
+        }, {
+            id: 10,
+            text: 'Segundo o Código da PMPR, a transferência para a reserva remunerada com proventos integrais, a pedido, é possível para o militar que contar com mais de:',
+            options: [
+                '25 anos de serviço público.',
+                '30 anos de serviço público, independentemente de inspeção de saúde.',
+                '35 anos de serviço público, com inspeção de saúde obrigatória.',
+                '20 anos de efetivo serviço na Corporação.'
+            ],
+            correct: 1,
+            explanation: 'Art. 157, §4º, inciso I: mais de 30 anos de serviço público, independente de inspeção de saúde e com proventos integrais.'
+        }, {
+            id: 11,
+            text: 'Sobre a contagem de pontos para merecimento, a atribuição de valores pela CPP (Art. 38) é feita mediante votação secreta, atribuindo de 1 a 2 pontos em cada um dos seguintes quesitos, EXCETO:',
+            options: [
+                'Caráter e conduta.',
+                'Espírito militar e policial.',
+                'Aptidão física e capacidade de combate.',
+                'Dedicação ao trabalho.'
+            ],
+            correct: 2,
+            explanation: 'Os quesitos são: Caráter/Conduta; Espírito Militar/Policial; Cultura Policial-Militar e Geral; Aptidão Profissional; Dedicação ao Trabalho. Não inclui "Aptidão física e capacidade de combate".'
+        }, {
+            id: 12,
+            text: 'No âmbito da Lei 14.268/2003, a indenização por morte é paga aos herdeiros na ordem sucessória do Código Civil, no valor fixo de:',
+            options: ['R$ 50.000,00', 'R$ 75.000,00', 'R$ 100.000,00', 'R$ 150.000,00'],
+            correct: 2,
+            explanation: 'Art. 3º: valor fixo de R$ 100.000,00 para a indenização por morte.'
+        }, {
+            id: 13,
+            text: 'De acordo com a Lei 22.187/2024 (Reestruturação da Carreira), o Aluno-Soldado 3ª Classe, após concluir o curso de formação com aproveitamento, é enquadrado como:',
+            options: [
+                'Soldado 1ª Classe.',
+                'Aluno-Soldado Operacional 2ª Classe.',
+                'Cabo.',
+                'Aluno-Soldado 2ª Classe.'
+            ],
+            correct: 1,
+            explanation: 'Art. 6º, inciso II: concluído o curso com aproveitamento, enquadrado como Aluno-Soldado Operacional 2ª Classe (conforme disponibilidade orçamentária).'
+        }, {
+            id: 14,
+            text: 'Sobre a reserva não remunerada (Código da PMPR), assinale a alternativa correta:',
+            options: [
+                'O oficial que obtiver exoneração do serviço ativo com menos de 5 anos de oficialato será transferido para a reserva não remunerada sem qualquer ônus.',
+                'A reserva não remunerada é uma situação transitória para militares que aguardam vaga para retorno à ativa.',
+                'O militar da reserva não remunerada que aceitar cargo público civil de provimento efetivo será transferido para essa condição.',
+                'O oficial da reserva não remunerada que atingir a idade para reforma é desligado da reserva pela exclusão.'
+            ],
+            correct: 3,
+            explanation: 'Art. 169 do Código da PMPR: "O militar da reserva, qualquer que seja a modalidade, que atingir a idade para a reforma é desligado da reserva pela EXCLUSÃO."'
+        }, {
+            id: 15,
+            text: 'A respeito das férias (RISG/PMPR), analise as proposições e assinale a correta:',
+            options: [
+                'O direito a férias é adquirido após 2 anos de exercício, contados da data de ingresso.',
+                'O efetivo indisponível por férias não pode exceder 20% do total da unidade.',
+                'A licença para tratamento de saúde de pessoa da família com duração superior a 30 dias NÃO prejudica o período aquisitivo de férias.',
+                'Em caso de empate na escolha do período de férias, o critério de desempate é a antiguidade relativa.'
+            ],
+            correct: 3,
+            explanation: 'Art. 387, §3º: critério de desempate = antiguidade relativa. As demais estão incorretas: aquisição após 1 ano (Art. 384), limite de 15% (Art. 387, §2º), e licença superior a 30 dias prejudica o período aquisitivo (Art. 385, inciso IV).'
+        }];
+
+        // ============================================================
+        // 3. RENDERIZAÇÃO
+        // ============================================================
+        const vfContainer = document.getElementById('vfQuestions');
+        const objContainer = document.getElementById('objQuestions');
+        const totalAcertosSpan = document.getElementById('totalAcertos');
+        const totalQuestoesSpan = document.getElementById('totalQuestoes');
+        const notaFinalSpan = document.getElementById('notaFinal');
+
+        let totalVF = vfData.length;
+        let totalObj = objData.length;
+        let totalAll = totalVF + totalObj;
+        totalQuestoesSpan.textContent = totalAll;
+
+        // --- render V/F ---
+        function renderVF() {
+            let html = '';
+            vfData.forEach((q, idx) => {
+                const qId = `vf_${idx}`;
+                html += `
+                    <div class="question-block" id="block_${qId}">
+                        <div class="q-text"><span class="badge">V/F</span> ${idx+1}. ${q.text}</div>
+                        <div class="options">
+                            <label><input type="radio" name="${qId}" value="true" /> Verdadeiro</label>
+                            <label><input type="radio" name="${qId}" value="false" /> Falso</label>
+                        </div>
+                        <div class="feedback waiting" id="fb_${qId}">⏳ Aguardando resposta</div>
+                        <div class="explanation hidden" id="exp_${qId}">${q.explanation}</div>
+                    </div>
+                `;
+            });
+            vfContainer.innerHTML = html;
+        }
+
+        // --- render Objetivas ---
+        function renderObj() {
+            let html = '';
+            objData.forEach((q, idx) => {
+                const qId = `obj_${idx}`;
+                const letters = ['A', 'B', 'C', 'D'];
+                html += `
+                    <div class="question-block" id="block_${qId}">
+                        <div class="q-text"><span class="badge">MÚLTIPLA</span> ${idx+1}. ${q.text}</div>
+                        <div class="options">
+                            ${q.options.map((opt, oi) => `
+                                <label><input type="radio" name="${qId}" value="${oi}" /> ${letters[oi]}) ${opt}</label>
+                            `).join('')}
+                        </div>
+                        <div class="feedback waiting" id="fb_${qId}">⏳ Aguardando resposta</div>
+                        <div class="explanation hidden" id="exp_${qId}">${q.explanation}</div>
+                    </div>
+                `;
+            });
+            objContainer.innerHTML = html;
+        }
+
+        // ============================================================
+        // 4. CORREÇÃO E CONTROLE
+        // ============================================================
+        function getSelectedValue(name) {
+            const el = document.querySelector(`input[name="${name}"]:checked`);
+            return el ? el.value : null;
+        }
+
+        function submitAll() {
+            let correctCount = 0;
+
+            // V/F
+            vfData.forEach((q, idx) => {
+                const qId = `vf_${idx}`;
+                const selected = getSelectedValue(qId);
+                const fb = document.getElementById(`fb_${qId}`);
+                const exp = document.getElementById(`exp_${qId}`);
+                if (selected === null) {
+                    fb.className = 'feedback wrong';
+                    fb.textContent = '❌ Nenhuma opção selecionada.';
+                    exp.classList.remove('hidden');
+                    return;
+                }
+                const isCorrect = (selected === 'true') === q.answer;
+                if (isCorrect) {
+                    fb.className = 'feedback correct';
+                    fb.textContent = '✅ Correto!';
+                    correctCount++;
+                } else {
+                    fb.className = 'feedback wrong';
+                    fb.textContent = '❌ Errado.';
+                }
+                exp.classList.remove('hidden');
+            });
+
+            // Objetivas
+            objData.forEach((q, idx) => {
+                const qId = `obj_${idx}`;
+                const selected = getSelectedValue(qId);
+                const fb = document.getElementById(`fb_${qId}`);
+                const exp = document.getElementById(`exp_${qId}`);
+                if (selected === null) {
+                    fb.className = 'feedback wrong';
+                    fb.textContent = '❌ Nenhuma opção selecionada.';
+                    exp.classList.remove('hidden');
+                    return;
+                }
+                const isCorrect = parseInt(selected) === q.correct;
+                if (isCorrect) {
+                    fb.className = 'feedback correct';
+                    fb.textContent = '✅ Correto!';
+                    correctCount++;
+                } else {
+                    fb.className = 'feedback wrong';
+                    fb.textContent = '❌ Errado.';
+                }
+                exp.classList.remove('hidden');
+            });
+
+            // Atualiza acertos e nota
+            totalAcertosSpan.textContent = correctCount;
+            const nota = ((correctCount / totalAll) * 10).toFixed(1);
+            notaFinalSpan.textContent = nota;
+        }
+
+        function resetAll() {
+            document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
+            document.querySelectorAll('.feedback').forEach(el => {
+                el.className = 'feedback waiting';
+                el.textContent = '⏳ Aguardando resposta';
+            });
+            document.querySelectorAll('.explanation').forEach(el => el.classList.add('hidden'));
+            totalAcertosSpan.textContent = '0';
+            notaFinalSpan.textContent = '0,0';
+        }
+
+        function showAllCorrect() {
+            vfData.forEach((q, idx) => {
+                const qId = `vf_${idx}`;
+                const fb = document.getElementById(`fb_${qId}`);
+                const exp = document.getElementById(`exp_${qId}`);
+                const resposta = q.answer ? 'Verdadeiro' : 'Falso';
+                fb.className = 'feedback correct';
+                fb.textContent = `📌 Gabarito: ${resposta}`;
+                exp.classList.remove('hidden');
+            });
+            objData.forEach((q, idx) => {
+                const qId = `obj_${idx}`;
+                const fb = document.getElementById(`fb_${qId}`);
+                const exp = document.getElementById(`exp_${qId}`);
+                const letters = ['A', 'B', 'C', 'D'];
+                fb.className = 'feedback correct';
+                fb.textContent = `📌 Gabarito: ${letters[q.correct]}`;
+                exp.classList.remove('hidden');
+            });
+        }
+
+        // ============================================================
+        // 5. INICIALIZAÇÃO
+        // ============================================================
+        renderVF();
+        renderObj();
+        totalAcertosSpan.textContent = '0';
+        notaFinalSpan.textContent = '0,0';
+
+        console.log('✅ Simulado CFP PM 2026 carregado com sucesso!');
+        console.log(`Total V/F: ${totalVF} | Total Objetivas: ${totalObj} | Total: ${totalAll}`);
+    </script>
+</body>
+</html>
